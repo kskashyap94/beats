@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JS Drum Kit</title>
+  <title>Kashyap beats</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -64,6 +64,18 @@
   }
 
   function playSound(e) {
+    e.preventDefault();
+    const keyCode = e.srcElement.textContent.charCodeAt(0);
+    const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${keyCode}"]`);
+    if (!audio) return;
+
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+  function playSoundForKeyboard(e) {
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
     const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
     if (!audio) return;
@@ -75,7 +87,8 @@
 
   const keys = Array.from(document.querySelectorAll('.key'));
   keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-  window.addEventListener('keydown', playSound);
+  window.addEventListener('keydown', playSoundForKeyboard);
+  window.addEventListener('click', playSound);
 </script>
 <script src="https://cdn.jsdelivr.net/gh/mathusummut/confetti.js/confetti.min.js"></script>
 <script>confetti.start()</script>
